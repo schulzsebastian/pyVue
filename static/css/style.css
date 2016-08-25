@@ -1,0 +1,15 @@
+.centerize {
+  text-align:center;
+}
+.fp-tooltip {
+  color: black !important;
+}
+svg {
+  padding-bottom: 3px;
+}
+#map {
+  position: relative;
+  height: 100%;
+  min-height: 500px;
+  width: 100%;
+}
