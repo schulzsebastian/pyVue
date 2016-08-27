@@ -1,4 +1,4 @@
-from pyvue import tag, html
+from tempylate import tag, html
 
 
 def render_template_index():

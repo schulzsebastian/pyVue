@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask
-from pyvue_templates import render_template_index
+from tempylates import render_template_index
 
 app = Flask(__name__)
 
