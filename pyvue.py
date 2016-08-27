@@ -1,11 +1,4 @@
-import json
-
-
-def html_basic(body="<div id=\"pyvue\">Hello pyVue!</div>",
-               title="Hello pyVue!",
-               css=[],
-               js=[],
-               js_scripts=[]):
+def html(body="", title="", css=[], js=[], js_scripts=[]):
     css_libraries = ["<link rel=\"stylesheet\" href=\"%s\">"
                      % str(lib) for lib in css]
     js_libraries = ["<script type=\"text/javascript\" src=\"%s\"></script>"
@@ -15,15 +8,16 @@ def html_basic(body="<div id=\"pyvue\">Hello pyVue!</div>",
     return """
     <!DOCTYPE HTML>
     <html>
-        <head>
-        <title>%s</title>
+      <head>
+      <title>%s</title>
+      %s
+      %s
+      </head>
+      <body>
         %s
-        %s
-    </head>
-    <body>
-        %s
-    </body>
-    %s
+      </body>
+      %s
+    </html>
     """ % (str(title),
            " ".join(css_libraries),
            " ".join(js_libraries),
@@ -31,12 +25,23 @@ def html_basic(body="<div id=\"pyvue\">Hello pyVue!</div>",
            " ".join(js_files))
 
 
-def div(content=[""], **kwargs):
+def tag(html_tag="div", js_framework="vue", **kwargs):
+    tag = str(html_tag)
     attrs = []
+    content = []
     for k, v in kwargs.iteritems():
-        if k.startswith("v"):
-            k = "v-" + k[1:]
-        elif k.startswith("_"):
+        if k == "content":
+            if isinstance(v, list):
+                for _ in v:
+                    content.append(_)
+            else:
+                content.append(v)
+        if k.startswith("_"):
             k = k[1:]
-        attrs.append(str(k) + "=\"" + str(v) + "\"")
-    return "<div " + " ".join(attrs) + ">" + " ".join(content) + "</div>"
+            if js_framework == "vue":
+                if k.startswith("v"):
+                    k = "v-" + k[1:]
+                elif k.startswith("_"):
+                    k = ":" + k[1:]
+            attrs.append(str(k) + "=\"" + str(v) + "\"")
+    return "<%s %s>%s</%s>" % (tag, " ".join(attrs), " ".join(content), tag)
